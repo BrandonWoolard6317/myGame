@@ -4,22 +4,15 @@ public class Locations {
     private String locationName,locationsDescription;
     private ArrayList<Exit> exits;
 
-
-
     public Locations(String locationName, String locationDescription){
         this.locationName = locationName;
         this.locationsDescription = locationDescription;
         exits = new ArrayList<Exit>();
-
     }
-
-
 
     public void addExit(Exit exit){
         exits.add(exit);
     }
-
-
 
     @Override
     public String toString() {
@@ -29,7 +22,7 @@ public class Locations {
                 "                 "+locationName+
                 "\n-----------------------------------------\n"+
                 "-----------------------------------------\n"+
-                "           Location Description"+
+                "          Location Description"+
                 "\n-----------------------------------------\n"+
                 "             "+locationsDescription+
                 "\n-----------------------------------------"+
@@ -38,7 +31,7 @@ public class Locations {
                 "\n-----------------------------------------\n"+
                 listExits()+
                 "\n-----------------------------------------\n\n";
-        return  text;
+        return text;
     }
 
     public String listExits(){
@@ -46,7 +39,6 @@ public class Locations {
         for(Exit exit : exits){
            exitList = exitList + exit.toString();
         }
-
         return exitList;
     }
 

@@ -1,13 +1,9 @@
 public class Exit {
-    public enum DIRECTION {
-        NORTH, SOUTH, EAST, WEST
-    }
-
     private String description;
-    private DIRECTION direction;
+    private Direction direction;
     private Locations leadsTo;
 
-    public Exit(String description, DIRECTION direction, Locations leadsTo) {
+    public Exit(String description, Direction direction, Locations leadsTo) {
         this.description = description;
         this.direction = direction;
         this.leadsTo = leadsTo;
@@ -15,12 +11,10 @@ public class Exit {
 
     @Override
     public String toString() {
-        String text = "Exit "
-                + description + " that leads " +
+        String text = "  "+description + " that leads " +
                 direction +
                 " to " + leadsTo.getLocationName() +
                 ". ";
-
         return text;
     }
 }
