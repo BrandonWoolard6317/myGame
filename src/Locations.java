@@ -50,4 +50,17 @@ public class Locations {
     public String getLocationsDescription() {
         return locationsDescription;
     }
+
+    public ArrayList<Exit> getExits() {
+        return exits;
+    }
+
+    public Locations getExit(Direction direction){
+        for(Exit exit: exits){
+            if(exit.getDirection() == direction){
+                return exit.getLeadsTo();
+            }
+        }
+        return this;
+    }
 }

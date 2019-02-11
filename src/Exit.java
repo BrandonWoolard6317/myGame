@@ -17,4 +17,12 @@ public class Exit {
                 ". ";
         return text;
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public Locations getLeadsTo() {
+        return leadsTo;
+    }
 }
