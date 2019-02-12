@@ -5,12 +5,10 @@ public class Main {
     public static Locations currentLocation;
     public static void main(String[] args) {
         Locations locationManayi = new Locations("Manayi", "Cold and dusty!");
-        possibleDirections directionsManayi = new possibleDirections(Direction.North, Direction.East, Direction.West);
         Locations locationMordox = new Locations("Mordox", "Hot and Dry!");
-        possibleDirections directionsMordox = new possibleDirections(Direction.South, Direction.East, Direction.West);
         locationManayi.addExit(new Exit("Wood door", Direction.North, locationMordox));
         locationMordox.addExit(new Exit("Wood door", Direction.South, locationManayi));
-        Items Key = new Items("Brass Key", "open the door to Manayi.");
+        locationMordox.addItem(new Items("Brass Key","unlock the door to go to Manayi"));
         currentLocation = locationManayi;
 
         System.out.println(currentLocation);
@@ -39,6 +37,9 @@ public class Main {
                 break;
             case "INV":
                 System.out.println("Printing inventory");
+                break;
+            case "ITEMS":
+                System.out.println(currentLocation.listItems());
                 break;
         }
 

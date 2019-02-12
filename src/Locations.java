@@ -3,11 +3,13 @@ import java.util.ArrayList;
 public class Locations {
     private String locationName,locationsDescription;
     private ArrayList<Exit> exits;
+    private ArrayList<Items> items;
 
     public Locations(String locationName, String locationDescription){
         this.locationName = locationName;
         this.locationsDescription = locationDescription;
         exits = new ArrayList<Exit>();
+        items = new ArrayList<Items>();
     }
 
     public void addExit(Exit exit){
@@ -62,5 +64,21 @@ public class Locations {
             }
         }
         return this;
+    }
+
+    public void addItem(Items item){
+        items.add(item);
+    }
+
+    public String listItems(){
+        String itemList = "";
+        for(Items items : items){
+            itemList = itemList + items.toString();
+        }
+        return itemList;
+    }
+
+    public ArrayList<Items> getItems() {
+        return items;
     }
 }
