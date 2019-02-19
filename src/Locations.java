@@ -5,6 +5,7 @@ public class Locations {
     private ArrayList<Exit> exits;
     private ArrayList<Items> items;
 
+
     public Locations(String locationName, String locationDescription){
         this.locationName = locationName;
         this.locationsDescription = locationDescription;
@@ -70,15 +71,15 @@ public class Locations {
         items.add(item);
     }
 
+    public void removeItem(Items item){
+        items.remove(item);
+    }
+
     public String listItems(){
         String itemList = "";
         for(Items items : items){
             itemList = itemList + items.toString();
         }
         return itemList;
-    }
-
-    public ArrayList<Items> getItems() {
-        return items;
     }
 }

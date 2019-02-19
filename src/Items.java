@@ -1,9 +1,17 @@
 public class Items {
-    private String itemName,itemDescription;
+    private static String itemName,itemDescription;
+
+    public Items(String itemName) {
+        this(itemName,"");
+    }
 
     public Items(String itemName, String itemDescription){
         this.itemName = itemName;
         this.itemDescription = itemDescription;
+    }
+
+    public static void pickupItem(){
+        System.out.println("You picked up the "+itemName);
     }
 
     @Override
