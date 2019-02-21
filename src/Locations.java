@@ -82,4 +82,7 @@ public class Locations {
         }
         return itemList;
     }
+    public static void pickupItem(String itemName) {
+        System.out.println("You picked up the "+itemName);
+    }
 }

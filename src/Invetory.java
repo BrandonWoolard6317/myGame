@@ -9,10 +9,16 @@ public class Invetory {
         this.itemDescription = itemDescription;
         invetory = new ArrayList<Invetory>();
     }
-    public void addInvetory(Invetory theInvetory){
+    public static void addInvetory(Invetory theInvetory){
         invetory.add(theInvetory);
     }
-
+    public static String listInvetory(){
+        String invetoryList = "";
+        for(Invetory theInvetory : invetory){
+            invetoryList = invetoryList + theInvetory.toString();
+        }
+        return invetoryList;
+    }
     @Override
     public String toString() {
         return itemName+", which is used to " + itemDescription+".";
