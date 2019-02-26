@@ -1,15 +1,15 @@
 public class Items {
-    private static String itemName,itemDescription;
+    private String itemName,itemDescription;
 
     public Items(String itemName, String itemDescription) {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
     }
 
-    public static void pickupItem() {
-        //if (Integer == 0) {
-            System.out.println("You picked up the " + itemName);
-        //}
+
+
+    public String getItemName() {
+        return itemName;
     }
 
     @Override

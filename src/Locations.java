@@ -3,14 +3,15 @@ import java.util.ArrayList;
 public class Locations {
     private String locationName,locationsDescription;
     private ArrayList<Exit> exits;
-    private ArrayList<Items> items;
+   // private ArrayList<Items> items;
+    private Inventory items;
 
 
     public Locations(String locationName, String locationDescription){
         this.locationName = locationName;
         this.locationsDescription = locationDescription;
         exits = new ArrayList<Exit>();
-        items = new ArrayList<Items>();
+        items = new Inventory();
     }
 
     public void addExit(Exit exit){
@@ -32,7 +33,12 @@ public class Locations {
                 "\n-----------------------------------------\n"+
                 "                 Exits"+
                 "\n-----------------------------------------\n"+
-                listExits()+
+                this.listExits()+
+                "\n-----------------------------------------"+
+                "\n-----------------------------------------\n"+
+                "                 Items"+
+                "\n-----------------------------------------\n"+
+                this.listItems()+
                 "\n-----------------------------------------";
 
         return text;
@@ -67,22 +73,48 @@ public class Locations {
         return this;
     }
 
+    public Exit returnExit(Direction direction){
+        Exit theExit = null;
+        for(Exit exit: exits){
+            if(exit.getDirection() == direction){
+                theExit = exit;
+                return theExit;
+            }
+        }
+        return theExit;
+    }
+
+    public boolean checkedLockedState(Direction direction){
+        for(Exit exit: exits){
+            if(exit.getDirection() == direction){
+                return exit.isLocked();
+            }
+        }
+        return false;
+    }
+
+
+
     public void addItem(Items item){
-        items.add(item);
+        items.addItem(item);
     }
 
     public void removeItem(Items item){
-        items.remove(item);
+        items.removeItem(item);
     }
 
     public String listItems(){
         String itemList = "";
-        for(Items items : items){
-            itemList = itemList + items.toString();
+
+        for(Items item : this.items.getInventory()){
+
+            itemList = itemList + item.toString() +"\n";
+
         }
         return itemList;
     }
-    public static void pickupItem(String itemName) {
-        System.out.println("You picked up the "+itemName);
+
+    public ArrayList<Items> getInventory(){
+        return this.items.getInventory();
     }
 }
