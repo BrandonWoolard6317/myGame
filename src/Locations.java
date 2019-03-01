@@ -74,14 +74,13 @@ public class Locations {
     }
 
     public Exit returnExit(Direction direction){
-        Exit theExit = null;
         for(Exit exit: exits){
             if(exit.getDirection() == direction){
-                theExit = exit;
-                return theExit;
+
+                return exit;
             }
         }
-        return theExit;
+        return null;
     }
 
     public boolean checkedLockedState(Direction direction){

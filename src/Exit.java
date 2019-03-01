@@ -12,17 +12,15 @@ public class Exit {
         this.locked = false;
     }
 
-    public Exit(String description, Direction direction, Locations leadsTo, Items interactiveItem) {
+    public Exit(String description, Direction direction, Locations leadsTo, boolean locked, Items interactiveItem) {
         this.description = description;
         this.direction = direction;
         this.leadsTo = leadsTo;
-        this.locked = true;
-        this.interactiveItem = interactiveItem;
+        this.locked = locked;
     }
 
-    public void setInteractiveItem(Items item){
-        interactiveItem = item;
-        locked = true;
+    public void setInteractiveItem(Items interactiveItem){
+        this.interactiveItem = interactiveItem;
     }
 
     @Override
@@ -46,8 +44,18 @@ public class Exit {
         return locked;
     }
 
+    public Items getInteractiveItem() {
+        return interactiveItem;
+    }
+
     public boolean unLock(Items item) {
-        if(!this.locked){
+        if(item==interactiveItem) {
+            System.out.println("The item was correctly used");
+            this.locked = false;
+        }
+        return true;
+
+        /*if(!this.locked){
             return true;
         }
 
@@ -63,9 +71,6 @@ public class Exit {
         }
         else{
             return false;
-        }
-
-
-
+        }*/
     }
 }
