@@ -2,10 +2,11 @@ import java.util.Scanner;
 
 public class AdventureGame {
 
-    public Locations currentLocation, locationMordox, locationManayi;
+    public Locations currentLocation, locationMordox, locationManayi, locationYatia;
     public Inventory playerInventory;
     public Items brassKey;
-    public Exit anExit;
+    public Exit maToMo,moToMa,moToYa;
+    public static Direction currentDirection;
 
     public AdventureGame() {
 
@@ -37,22 +38,23 @@ public class AdventureGame {
     private void createLocations() {
         locationManayi = new Locations("Manayi", "Cold and dusty!");
         locationMordox = new Locations("Mordox", "Hot and Dry!");
+        locationYatia = new Locations("Yatia","Wet and Musty!");
     }
 
     private void createExits() {
-        locationManayi.addExit(new Exit("Wood door", Direction.North, locationMordox));
-        //locationMordox.addExit(new Exit("Wood door", Direction.South, locationManayi,brassKey));
-        anExit = new Exit("Wood door", Direction.South, locationManayi,true,brassKey);
-        locationMordox.addExit(anExit);
-        anExit.setInteractiveItem(brassKey);
+        maToMo = new Exit("Wood door", Direction.North, locationMordox);
+        locationManayi.addExit(maToMo);
+        moToMa = new Exit("Wood door", Direction.South, locationManayi);
+        moToYa = new Exit("Metal door", Direction.East, locationYatia,true,brassKey,"Unlocked door to Yatia.");
+        locationMordox.addExit(moToMa);
+        locationMordox.addExit(moToYa);
+        moToYa.setInteractiveItem(brassKey);
     }
 
     private void createItems() {
         locationManayi.addItem(new Items("Knife", "Used to cut things"));
-        brassKey = new Items("Brass Key", "unlock the door to go to Manayi");
+        brassKey = new Items("Brass Key", "unlock the door to go to Yatia");
         locationMordox.addItem(brassKey);
-        //locationMordox.addItem(new Items("Brass Key", "unlock the door to go to Manayi"));
-
 
     }
 
@@ -67,6 +69,7 @@ public class AdventureGame {
             case "n":
                 if (!currentLocation.checkedLockedState(Direction.North)) {
                     currentLocation = currentLocation.getExit(Direction.North);
+                    currentDirection = Direction.North;
                     break;
                 }
                 break;
@@ -74,18 +77,21 @@ public class AdventureGame {
             case "e":
                 if (!currentLocation.checkedLockedState(Direction.East)) {
                     currentLocation = currentLocation.getExit(Direction.East);
+                    currentDirection = Direction.East;
                     break;
                 }
             case "south":
             case "s":
                 if (!currentLocation.checkedLockedState(Direction.South)) {
                     currentLocation = currentLocation.getExit(Direction.South);
+                    currentDirection = Direction.South;
                     break;
                 }
             case "west":
             case "w":
                 if (!currentLocation.checkedLockedState(Direction.West)) {
                     currentLocation = currentLocation.getExit(Direction.West);
+                    currentDirection = Direction.West;
                     break;
                 }
             case "help":
@@ -115,14 +121,10 @@ public class AdventureGame {
                     String additionalWord;
                     additionalWord = options[2] != null ? " " + options[2] : "";
                     System.out.println("Used " + options[1] + additionalWord);
-                    usedItem(options,Direction.South);
+                    usedItem(options,currentDirection);
                 } else {
                     System.out.println("Cannot use the item here");
                 }
-                break;
-            case "used":
-                anExit.getInteractiveItem();
-                anExit.unLock(brassKey);
                 break;
             default:
                 System.out.println("We have not received the correct input");
@@ -172,7 +174,7 @@ public class AdventureGame {
             }else if ((options[1] + " " + options[2]).equals(item.getItemName().toLowerCase())) {
                 if (currentLocation.checkedLockedState(direction)) {
                     playerInventory.removeItem(item);
-                    anExit.unLock(item);
+                    currentLocation.returnExit(direction).unLock(item);
                     return true;
                 }
             }

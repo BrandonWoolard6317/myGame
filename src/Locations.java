@@ -20,6 +20,15 @@ public class Locations {
 
     @Override
     public String toString() {
+        String currentDirection;
+        String theDirection="                  "+AdventureGame.currentDirection;
+        currentDirection=if(AdventureGame.currentDirection==null){}
+        else{"\n-----------------------------------------\n"+
+                "                 Direction"+
+                "\n-----------------------------------------\n"+
+                theDirection+
+                "\n-----------------------------------------"}
+
         String text = "-----------------------------------------\n"+
                 "             Location Name"+
                 "\n-----------------------------------------\n"+
@@ -35,6 +44,7 @@ public class Locations {
                 "\n-----------------------------------------\n"+
                 this.listExits()+
                 "\n-----------------------------------------"+
+                currentDirection+
                 "\n-----------------------------------------\n"+
                 "                 Items"+
                 "\n-----------------------------------------\n"+
