@@ -2,10 +2,10 @@ import java.util.Scanner;
 
 public class AdventureGame {
 
-    public Locations currentLocation, locationMordox, locationManayi, locationYatia;
+    public Locations currentLocation,locationMordox,locationManayi,locationYatia,locationKenya,locationOnsid;
     public Inventory playerInventory;
     public Items brassKey;
-    public Exit maToMo,moToMa,moToYa;
+    public Exit maToMo,moToMa,moToYa,yaToMo,yaToKe,keToYa,keToOn,onToKe;
     public static Direction currentDirection;
 
     public AdventureGame() {
@@ -19,8 +19,6 @@ public class AdventureGame {
         while (true) {
             System.out.println(currentLocation);
             takeCommands(new Scanner(System.in));
-
-
         }
     }
 
@@ -39,23 +37,31 @@ public class AdventureGame {
         locationManayi = new Locations("Manayi", "Cold and dusty!");
         locationMordox = new Locations("Mordox", "Hot and Dry!");
         locationYatia = new Locations("Yatia","Wet and Musty!");
+        locationKenya = new Locations("Kenya","Unknown");
+        locationOnsid = new Locations("Onsid","Unknown");
     }
 
     private void createExits() {
         maToMo = new Exit("Wood door", Direction.North, locationMordox);
-        locationManayi.addExit(maToMo);
         moToMa = new Exit("Wood door", Direction.South, locationManayi);
-        moToYa = new Exit("Metal door", Direction.East, locationYatia,true,brassKey,"Unlocked door to Yatia.");
+        moToYa = new Exit("Metal door", Direction.East, locationYatia);
+        yaToMo = new Exit("Metal Door", Direction.West, locationMordox);
+        yaToKe = new Exit("Gold Door",Direction.North,locationKenya);
+        keToYa = new Exit("Gold Door", Direction.South, locationYatia);
+        keToOn = new Exit("Gold Door",Direction.East,locationKenya,true,brassKey,"Unlocked door to Onsid.");
+        locationManayi.addExit(maToMo);
         locationMordox.addExit(moToMa);
         locationMordox.addExit(moToYa);
-        moToYa.setInteractiveItem(brassKey);
+        locationYatia.addExit(yaToMo);
+        locationYatia.addExit(yaToKe);
+        //locationKenya.addExit(keToYa);
+        locationKenya.addExit(keToOn);
+        keToOn.setInteractiveItem(brassKey);
     }
 
     private void createItems() {
         locationManayi.addItem(new Items("Knife", "Used to cut things"));
         brassKey = new Items("Brass Key", "unlock the door to go to Yatia");
-        locationMordox.addItem(brassKey);
-
     }
 
     public void takeCommands(Scanner keyboard) {
@@ -125,6 +131,9 @@ public class AdventureGame {
                 } else {
                     System.out.println("Cannot use the item here");
                 }
+                break;
+            case "used":
+                moToYa.unLock(brassKey);
                 break;
             default:
                 System.out.println("We have not received the correct input");

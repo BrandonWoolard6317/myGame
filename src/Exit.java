@@ -53,22 +53,14 @@ public class Exit {
         return locked;
     }
 
-    public Items getInteractiveItem() {
-        return interactiveItem;
-    }
-
     public boolean unLock(Items item) {
         if(item==interactiveItem) {
             if(actionString==null){
-
+                System.out.println();
             }else {
                 System.out.println(actionString);
             }
-            if(this.locked=true){
-                this.locked = false;
-            }else if(this.locked=false){
-                this.locked=true;
-            }
+            locked=false;
         }
         return true;
     }

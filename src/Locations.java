@@ -22,12 +22,15 @@ public class Locations {
     public String toString() {
         String currentDirection;
         String theDirection="                  "+AdventureGame.currentDirection;
-        currentDirection=if(AdventureGame.currentDirection==null){}
-        else{"\n-----------------------------------------\n"+
-                "                 Direction"+
-                "\n-----------------------------------------\n"+
-                theDirection+
-                "\n-----------------------------------------"}
+        if(AdventureGame.currentDirection==null){
+            currentDirection = "";
+        }else{
+            currentDirection="\n-----------------------------------------\n"+
+                    "                 Direction"+
+                    "\n-----------------------------------------\n"+
+                    theDirection+
+                    "\n-----------------------------------------";
+        }
 
         String text = "-----------------------------------------\n"+
                 "             Location Name"+
@@ -86,7 +89,6 @@ public class Locations {
     public Exit returnExit(Direction direction){
         for(Exit exit: exits){
             if(exit.getDirection() == direction){
-
                 return exit;
             }
         }
