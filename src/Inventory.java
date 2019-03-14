@@ -12,6 +12,7 @@ public class Inventory {
 
     public void addItem(Items item) {
         inventory.add(item);
+
     }
 
     public void removeItem(Items item) {

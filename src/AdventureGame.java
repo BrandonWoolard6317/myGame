@@ -4,18 +4,14 @@ public class AdventureGame {
 
     public Locations currentLocation,locationMordox,locationManayi,locationYatia,locationKenya,locationOnsid;
     public Inventory playerInventory;
-    public Items brassKey;
+    public Items knife,brassKey;
     public Exit maToMo,moToMa,moToYa,yaToMo,yaToKe,keToYa,keToOn,onToKe;
     public static Direction currentDirection;
 
     public AdventureGame() {
-
-
         init();
-
-
+        System.out.println("Type Help or ? to get a list of commands!");
         currentLocation = locationManayi;
-
         while (true) {
             System.out.println(currentLocation);
             takeCommands(new Scanner(System.in));
@@ -54,22 +50,22 @@ public class AdventureGame {
         locationMordox.addExit(moToYa);
         locationYatia.addExit(yaToMo);
         locationYatia.addExit(yaToKe);
-        //locationKenya.addExit(keToYa);
+        locationKenya.addExit(keToYa);
         locationKenya.addExit(keToOn);
+        locationKenya.addItem(brassKey);
         keToOn.setInteractiveItem(brassKey);
+        locationManayi.addItem(knife);
     }
 
     private void createItems() {
-        locationManayi.addItem(new Items("Knife", "Used to cut things"));
-        brassKey = new Items("Brass Key", "unlock the door to go to Yatia");
+        knife = new Items("Gold Knife", "Used to cut things","Has silver engraving in a different language");
+        brassKey = new Items("Brass Key", "An old used up key","Can unlock the door to go to Yatia");
     }
 
     public void takeCommands(Scanner keyboard) {
         System.out.println("What do you want to do?");
         String[] options = keyboard.nextLine().toLowerCase().split(" ");
         String choice = options[0];
-
-
         switch (choice) {
             case "north":
             case "n":
@@ -103,7 +99,8 @@ public class AdventureGame {
             case "help":
             case "?":
                 System.out.println("Directions\n------------------------\nN or North to go North\nE or East to go" +
-                        " East\nS or South to go South\nW or West to go West\n");
+                        " East\nS or South to go South\nW or West to go West\n\nOther\n------------------------\nInv/Items/I to open Inventory\n" +
+                        "Take to take an item\nUse to use an item");
                 break;
             case "inv":
             case "items":
@@ -111,7 +108,6 @@ public class AdventureGame {
                 for (Items item : playerInventory.getInventory()) {
                     System.out.println(item.toString() + "\n");
                 }
-
                 break;
             case "take":
                 if (checkItemsInLocation(options)) {
@@ -132,14 +128,15 @@ public class AdventureGame {
                     System.out.println("Cannot use the item here");
                 }
                 break;
-            case "used":
-                moToYa.unLock(brassKey);
+            case "description":
+                for(Items item : playerInventory.getInventory()){
+                    item.getItemDescription();
+                }
                 break;
             default:
                 System.out.println("We have not received the correct input");
                 break;
         }
-
     }
 
     public boolean checkItemsInLocation(String[] options) {
@@ -147,10 +144,12 @@ public class AdventureGame {
             if (options[1].equals(item.getItemName().toLowerCase())) {
                 currentLocation.removeItem(item);
                 playerInventory.addItem(item);
+                item.changeDescription();
                 return true;
             }else if ((options[1] + " " + options[2]).equals(item.getItemName().toLowerCase())) {
                 currentLocation.removeItem(item);
                 playerInventory.addItem(item);
+                item.changeDescription();
                 return true;
             }
         }
