@@ -98,9 +98,9 @@ public class AdventureGame {
                 }
             case "help":
             case "?":
-                System.out.println("Directions\n------------------------\nN or North to go North\nE or East to go" +
-                        " East\nS or South to go South\nW or West to go West\n\nOther\n------------------------\nInv/Items/I to open Inventory\n" +
-                        "Take to take an item\nUse to use an item");
+                System.out.println("Directions\n------------------------\nN/North: To go North\nE/East: To go" +
+                        " East\nS/South: To go South\nW/West: To go West\n\nOther\n------------------------\nInv/Items/I: To open Inventory\n" +
+                        "Take: To take an item\nUse: To use an item");
                 break;
             case "inv":
             case "items":
@@ -111,9 +111,9 @@ public class AdventureGame {
                 break;
             case "take":
                 if (checkItemsInLocation(options)) {
-                    String additionalWord;
-                    additionalWord = options[2] != null ? " " + options[2] : "";
-                    System.out.println("Taken " + options[1] + additionalWord);
+                    for (Items item : playerInventory.getInventory()) {
+                        System.out.println("Taken " + item.getItemName());
+                    }
                 } else {
                     System.out.println("That item is not here");
                 }
@@ -128,11 +128,6 @@ public class AdventureGame {
                     System.out.println("Cannot use the item here");
                 }
                 break;
-            case "description":
-                for(Items item : playerInventory.getInventory()){
-                    item.getItemDescription();
-                }
-                break;
             default:
                 System.out.println("We have not received the correct input");
                 break;
@@ -141,12 +136,7 @@ public class AdventureGame {
 
     public boolean checkItemsInLocation(String[] options) {
         for (Items item : currentLocation.getInventory()) {
-            if (options[1].equals(item.getItemName().toLowerCase())) {
-                currentLocation.removeItem(item);
-                playerInventory.addItem(item);
-                item.changeDescription();
-                return true;
-            }else if ((options[1] + " " + options[2]).equals(item.getItemName().toLowerCase())) {
+            if (item.getItemName().contains(options[options.length-1])) {
                 currentLocation.removeItem(item);
                 playerInventory.addItem(item);
                 item.changeDescription();

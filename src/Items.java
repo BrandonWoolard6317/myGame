@@ -7,7 +7,7 @@ public class Items {
     }
 
     public Items(String itemName,String itemDescription,String inventoryDescription) {
-        this.itemName = itemName;
+        this.itemName = itemName.toLowerCase();
         this.itemDescription = itemDescription;
         this.inventoryDescription = inventoryDescription;
     }
