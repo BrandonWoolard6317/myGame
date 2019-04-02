@@ -4,14 +4,18 @@ public class AdventureGame {
 
     public Locations currentLocation,locationMordox,locationManayi,locationYatia,locationKenya,locationOnsid;
     public Inventory playerInventory;
-    public Items knife,brassKey;
+    public Items knife,brassKey,batteries,flashLight,poweredFlashLight,combinedItem1;
     public Exit maToMo,moToMa,moToYa,yaToMo,yaToKe,keToYa,keToOn,onToKe;
     public static Direction currentDirection;
+    public static String playerName;
 
     public AdventureGame() {
         init();
-        System.out.println("Type Help or ? to get a list of commands!");
+        System.out.println("What's your character's name?");
+        Scanner scanner = new Scanner(System.in);
+        //playerName = scanner.nextLine();
         currentLocation = locationManayi;
+        System.out.println("Type Help or ? to get a list of commands!");
         while (true) {
             System.out.println(currentLocation);
             takeCommands(new Scanner(System.in));
@@ -32,7 +36,7 @@ public class AdventureGame {
     private void createLocations() {
         locationManayi = new Locations("Manayi", "Cold and dusty!");
         locationMordox = new Locations("Mordox", "Hot and Dry!");
-        locationYatia = new Locations("Yatia","Wet and Musty!");
+        locationYatia = new Locations("Yatia","Ancient symbols on wall.",true,"Wet and Musty!");
         locationKenya = new Locations("Kenya","Unknown");
         locationOnsid = new Locations("Onsid","Unknown");
     }
@@ -55,11 +59,16 @@ public class AdventureGame {
         locationKenya.addItem(brassKey);
         keToOn.setInteractiveItem(brassKey);
         locationManayi.addItem(knife);
+        locationMordox.addItem(batteries);
+        locationMordox.addItem(flashLight);
     }
 
     private void createItems() {
-        knife = new Items("Gold Knife", "Used to cut things","Has silver engraving in a different language");
-        brassKey = new Items("Brass Key", "An old used up key","Can unlock the door to go to Yatia");
+        knife = new Items("Gold Knife", "Used to cut things","Has silver engraving in a different language",false);
+        brassKey = new Items("Brass Key", "An old used up key","Can unlock the door to go to Yatia",false);
+        batteries = new Items("Batteries","Used to power something up","AA Batteries",true,flashLight,poweredFlashLight);
+        flashLight = new Items("Flashlight","Used to see in dark areas","Needs AA Batteries",true,batteries,poweredFlashLight);
+        poweredFlashLight = new Items("Powered Flashlight","Used to see in dark areas","Needs AA Batteries",true,batteries,poweredFlashLight);
     }
 
     public void takeCommands(Scanner keyboard) {
@@ -100,7 +109,7 @@ public class AdventureGame {
             case "?":
                 System.out.println("Directions\n------------------------\nN/North: To go North\nE/East: To go" +
                         " East\nS/South: To go South\nW/West: To go West\n\nOther\n------------------------\nInv/Items/I: To open Inventory\n" +
-                        "Take: To take an item\nUse: To use an item");
+                        "Take: To take an item\nUse: To use an item\nPlayerName/ChangeName/ChangePlayerName: To change your character's name");
                 break;
             case "inv":
             case "items":
@@ -126,6 +135,37 @@ public class AdventureGame {
                     usedItem(options,currentDirection);
                 } else {
                     System.out.println("Cannot use the item here");
+                }
+                break;
+            case "playername":
+            case "changename":
+            case "changeplayername":
+                String a;
+                System.out.println("Do you want to change your name?");
+                a = keyboard.nextLine().toLowerCase();
+                if(a.equals("yes")){
+                    changePlayerName();
+                }else if(a.equals("no")) {
+                    return;
+                }
+                break;
+            case "combine":
+                String b;
+                System.out.println("What is the 1st Item?");
+                a=keyboard.nextLine();
+                System.out.println("What is the 2nd Item?");
+                b=keyboard.nextLine();
+                if(a.equals("batteries")&&b.equals("flashlight")){
+                    itemCombine(batteries,flashLight,poweredFlashLight);
+                }else if(a.equals("flashlight")&&b.equals("batteries")){
+                    itemCombine(batteries,flashLight,poweredFlashLight);
+                }
+                break;
+            case "light":
+            case "flashlight":
+                if(playerInventory.getInventory().contains(poweredFlashLight)){
+                    currentLocation.lightRoom();
+                    System.out.println("You've lightened up this room!");
                 }
                 break;
             default:
@@ -178,5 +218,17 @@ public class AdventureGame {
             }
         }
         return false;
+    }
+    public void changePlayerName(){
+        System.out.println("What's your character's name?");
+        Scanner a = new Scanner(System.in);
+        playerName = a.nextLine();
+    }
+    public void itemCombine(Items item1,Items item2,Items combinedItem){
+        if(playerInventory.getInventory().contains(item1)&&playerInventory.getInventory().contains(item2)) {
+            playerInventory.removeItem(item1);
+            playerInventory.removeItem(item2);
+            playerInventory.addItem(combinedItem);
+        }
     }
 }

@@ -1,9 +1,8 @@
 import java.util.ArrayList;
 
 public class Locations {
-    private String locationName,locationsDescription;
+    private String locationName,locationsDescription,b25,b26;
     private ArrayList<Exit> exits;
-   // private ArrayList<Items> items;
     private Inventory items;
 
 
@@ -14,6 +13,20 @@ public class Locations {
         items = new Inventory();
     }
 
+    public Locations(String locationName, String locationsDescription,boolean darkRoom,String darkRoomDescription){
+        exits = new ArrayList<Exit>();
+        items = new Inventory();
+        this.b25 = locationsDescription;
+        this.b26 = locationName;
+        if(darkRoom){
+            this.locationName = "Unknown(Too Dark)";
+            this.locationsDescription = darkRoomDescription;
+        }else{
+            this.locationName = locationName;
+            this.locationsDescription = locationsDescription;
+        }
+    }
+
     public void addExit(Exit exit){
         exits.add(exit);
     }
@@ -21,6 +34,8 @@ public class Locations {
     @Override
     public String toString() {
         String currentDirection;
+        String playername;
+        String items;
         String theDirection="                  "+AdventureGame.currentDirection;
         if(AdventureGame.currentDirection==null){
             currentDirection = "";
@@ -32,7 +47,28 @@ public class Locations {
                     "\n-----------------------------------------";
         }
 
-        String text = "-----------------------------------------\n"+
+        if(AdventureGame.playerName==null){
+            playername = "";
+        }else{
+            playername="-----------------------------------------\n"
+                    +"               Player Name\n"
+                    +"-----------------------------------------\n"+
+                    "                 "+AdventureGame.playerName+
+                    "\n-----------------------------------------\n";
+        }
+
+        if(listItems()==null){
+            items="";
+        }else{
+            items="\n-----------------------------------------\n"+
+                    "                 Items"+
+                    "\n-----------------------------------------\n"+
+                    this.listItems()+
+                    "\n-----------------------------------------";
+        }
+
+        String text = playername+
+                "-----------------------------------------\n"+
                 "             Location Name"+
                 "\n-----------------------------------------\n"+
                 "                 "+locationName+
@@ -48,11 +84,7 @@ public class Locations {
                 this.listExits()+
                 "\n-----------------------------------------"+
                 currentDirection+
-                "\n-----------------------------------------\n"+
-                "                 Items"+
-                "\n-----------------------------------------\n"+
-                this.listItems()+
-                "\n-----------------------------------------";
+                items;
 
         return text;
     }
@@ -104,7 +136,10 @@ public class Locations {
         return false;
     }
 
-
+    public void lightRoom(){
+        this.locationName = this.b26;
+        this.locationsDescription = this.b25;
+    }
 
     public void addItem(Items item){
         items.addItem(item);
