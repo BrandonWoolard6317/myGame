@@ -1,0 +1,21 @@
+5
+Manayi
+Cold and dusty!
+false
+darkRoomDescription
+Mordox
+Hot and Dry!
+false
+darkRoomDescription
+Yatia
+Ancient symbols on wall.
+true
+Wet and Musty!
+Kenya
+Unknown
+false
+darkRoomDescription
+Onsid
+Unknown
+false
+darkRoomDescription

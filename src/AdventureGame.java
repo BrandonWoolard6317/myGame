@@ -3,23 +3,31 @@ import java.util.Scanner;
 public class AdventureGame {
 
     public Locations currentLocation,locationMordox,locationManayi,locationYatia,locationKenya,locationOnsid;
+
     public Inventory playerInventory;
-    public Items knife,brassKey,batteries,flashLight,poweredFlashLight,combinedItem1;
+    public Items knife,brassKey,batteries,flashLight,poweredFlashLight;
     public Exit maToMo,moToMa,moToYa,yaToMo,yaToKe,keToYa,keToOn,onToKe;
     public static Direction currentDirection;
-    public static String playerName;
+    public static String playerName,lightHelp="";
+    public static String pI;
 
     public AdventureGame() {
         init();
         System.out.println("What's your character's name?");
-        Scanner scanner = new Scanner(System.in);
-        //playerName = scanner.nextLine();
         currentLocation = locationManayi;
         System.out.println("Type Help or ? to get a list of commands!");
         while (true) {
+            for (Items item : playerInventory.getInventory()) {
+                pI = "" + item.toString();
+            }
             System.out.println(currentLocation);
             takeCommands(new Scanner(System.in));
         }
+    }
+
+    @Override
+    public String toString() {
+        return ""+playerInventory.getInventory();
     }
 
     private void init() {
@@ -34,6 +42,22 @@ public class AdventureGame {
     }
 
     private void createLocations() {
+        Scanner reader = new Scanner("Rooms.txt");
+        Locations[] locationList = new Locations[reader.nextInt()];
+        for(int i=0;i<locationList.length;i++){
+            reader.nextLine();
+            String locationName = reader.nextLine();
+            String locationDescription = reader.nextLine();
+            boolean darkRoom = reader.nextBoolean();
+            String darkRoomDescription;
+            if(darkRoom){
+                darkRoomDescription = reader.nextLine();
+                locationList[i] = new Locations(locationName,locationDescription,darkRoom,darkRoomDescription);
+            }
+            else {
+                locationList[i] = new Locations(locationName,locationDescription);
+            }
+        }
         locationManayi = new Locations("Manayi", "Cold and dusty!");
         locationMordox = new Locations("Mordox", "Hot and Dry!");
         locationYatia = new Locations("Yatia","Ancient symbols on wall.",true,"Wet and Musty!");
@@ -42,6 +66,23 @@ public class AdventureGame {
     }
 
     private void createExits() {
+        Scanner reader = new Scanner("Exits.txt");
+        Items[] exitsList = new Items[reader.nextInt()];
+        for(int i=0;i<exitsList.length;i++){
+            reader.nextLine();
+            String description = reader.nextLine();
+            Direction direction = reader.nextLine();
+            Locations locations = reader.nextLine();
+            boolean locked = reader.nextBoolean();
+            if(locked){
+                Items item = reader.nextLine();
+                String actionString = reader.nextLine();
+                exitsList[i] = new Exit(description,direction,locations,locked,item,actionString);
+            }
+            else {
+                exitsList[i] = new Exit(description,direction,locations);
+            }
+        }
         maToMo = new Exit("Wood door", Direction.North, locationMordox);
         moToMa = new Exit("Wood door", Direction.South, locationManayi);
         moToYa = new Exit("Metal door", Direction.East, locationYatia);
@@ -64,6 +105,23 @@ public class AdventureGame {
     }
 
     private void createItems() {
+        Scanner reader = new Scanner("Items.txt");
+        Items[] itemsList = new Items[reader.nextInt()];
+        for(int i=0;i<itemsList.length;i++){
+            reader.nextLine();
+            String itemName = reader.nextLine();
+            String itemDescription = reader.nextLine();
+            String inventoryDescription = reader.nextLine();
+            boolean itemCombine = reader.nextBoolean();
+            if(itemCombine){
+                String item1 = reader.nextLine();
+                String item2 = reader.nextLine();
+                itemsList[i] = new Items(itemName,itemDescription,inventoryDescription,itemCombine,item1,item2);
+            }
+            else {
+                itemsList[i] = new Items(itemName,itemDescription,inventoryDescription,itemCombine);
+            }
+        }
         knife = new Items("Gold Knife", "Used to cut things","Has silver engraving in a different language",false);
         brassKey = new Items("Brass Key", "An old used up key","Can unlock the door to go to Yatia",false);
         batteries = new Items("Batteries","Used to power something up","AA Batteries",true,flashLight,poweredFlashLight);
@@ -109,7 +167,7 @@ public class AdventureGame {
             case "?":
                 System.out.println("Directions\n------------------------\nN/North: To go North\nE/East: To go" +
                         " East\nS/South: To go South\nW/West: To go West\n\nOther\n------------------------\nInv/Items/I: To open Inventory\n" +
-                        "Take: To take an item\nUse: To use an item\nPlayerName/ChangeName/ChangePlayerName: To change your character's name");
+                        "Take: To take an item\nUse: To use an item\nPlayerName/ChangeName/ChangePlayerName: To change your character's name"+lightHelp);
                 break;
             case "inv":
             case "items":
@@ -155,10 +213,16 @@ public class AdventureGame {
                 a=keyboard.nextLine();
                 System.out.println("What is the 2nd Item?");
                 b=keyboard.nextLine();
-                if(a.equals("batteries")&&b.equals("flashlight")){
+                if(playerInventory.getInventory().contains(flashLight)&&playerInventory.getInventory().contains(batteries)){
+                    if(a.equals("batteries")&&b.equals("flashlight")){
                     itemCombine(batteries,flashLight,poweredFlashLight);
-                }else if(a.equals("flashlight")&&b.equals("batteries")){
-                    itemCombine(batteries,flashLight,poweredFlashLight);
+                    lightHelp = "\nLight/Flashlight: To light a dark room up";
+                    System.out.println("You unlocked a new command!");
+                    }else if(a.equals("flashlight")&&b.equals("batteries")) {
+                    itemCombine(batteries, flashLight, poweredFlashLight);
+                    lightHelp = "\nLight/Flashlight: To light a dark room up";
+                    System.out.println("You unlocked a new command!");
+                    }
                 }
                 break;
             case "light":
@@ -167,6 +231,9 @@ public class AdventureGame {
                     currentLocation.lightRoom();
                     System.out.println("You've lightened up this room!");
                 }
+                break;
+            case "boom":
+                playerInventory.addItem(poweredFlashLight);
                 break;
             default:
                 System.out.println("We have not received the correct input");

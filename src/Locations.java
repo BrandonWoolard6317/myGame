@@ -67,6 +67,17 @@ public class Locations {
                     "\n-----------------------------------------";
         }
 
+        String playerInventory;
+            if(AdventureGame.pI==null){
+                playerInventory="";
+            }else {
+                playerInventory = "\n-----------------------------------------\n" +
+                        "           Player Inventory" +
+                        "\n-----------------------------------------\n" +
+                        AdventureGame.pI +
+                        "\n-----------------------------------------";
+            }
+
         String text = playername+
                 "-----------------------------------------\n"+
                 "             Location Name"+
@@ -84,7 +95,7 @@ public class Locations {
                 this.listExits()+
                 "\n-----------------------------------------"+
                 currentDirection+
-                items;
+                items+playerInventory;
 
         return text;
     }
