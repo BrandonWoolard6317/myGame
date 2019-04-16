@@ -3,6 +3,8 @@ Manayi
 Cold and dusty!
 false
 darkRoomDescription
+Wood door
+north
 Mordox
 Hot and Dry!
 false

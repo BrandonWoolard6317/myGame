@@ -13,7 +13,49 @@ public class Locations {
         items = new Inventory();
     }
 
-    public Locations(String locationName, String locationsDescription,boolean darkRoom,String darkRoomDescription){
+    public Locations(String locationName, String locationsDescription, boolean darkRoom, String darkRoomDescription,String exit1Name,Direction exit1Direction,Locations leadsTo) {
+        exits = new ArrayList<Exit>();
+        items = new Inventory();
+        this.b25 = locationsDescription;
+        this.b26 = locationName;
+        if(darkRoom){
+            this.locationName = "Unknown(Too Dark)";
+            this.locationsDescription = darkRoomDescription;
+        }else{
+            this.locationName = locationName;
+            this.locationsDescription = locationsDescription;
+        }
+    }
+
+    public Locations(String locationName, String locationsDescription, boolean darkRoom, String darkRoomDescription,String exit1Name,Direction exit1Direction,String exit2Name,Direction exit2Direction,String exit3Name,Direction exit3Direction) {
+        exits = new ArrayList<Exit>();
+        items = new Inventory();
+        this.b25 = locationsDescription;
+        this.b26 = locationName;
+        if(darkRoom){
+            this.locationName = "Unknown(Too Dark)";
+            this.locationsDescription = darkRoomDescription;
+        }else{
+            this.locationName = locationName;
+            this.locationsDescription = locationsDescription;
+        }
+    }
+
+    public Locations(String locationName, String locationsDescription, boolean darkRoom, String darkRoomDescription,String exit1Name,Direction exit1Direction,String exit2Name,Direction exit2Direction) {
+        exits = new ArrayList<Exit>();
+        items = new Inventory();
+        this.b25 = locationsDescription;
+        this.b26 = locationName;
+        if(darkRoom){
+            this.locationName = "Unknown(Too Dark)";
+            this.locationsDescription = darkRoomDescription;
+        }else{
+            this.locationName = locationName;
+            this.locationsDescription = locationsDescription;
+        }
+    }
+
+    public Locations(String locationName, String locationsDescription, boolean darkRoom, String darkRoomDescription){
         exits = new ArrayList<Exit>();
         items = new Inventory();
         this.b25 = locationsDescription;

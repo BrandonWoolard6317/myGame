@@ -50,23 +50,77 @@ public class AdventureGame {
             String locationDescription = reader.nextLine();
             boolean darkRoom = reader.nextBoolean();
             String darkRoomDescription;
+            String leadsTo1 = reader.nextLine();
+            String exitDescription1 = reader.nextLine();
+            String dir1 = reader.nextLine();
+            String leadsTo2 = reader.nextLine();
+            String exitDescription2 = reader.nextLine();
+            String dir2 = reader.nextLine();
+            String leadsTo3 = reader.nextLine();
+            String exitDescription3 = reader.nextLine();
+            String dir3 = reader.nextLine();
+            Direction direction1 = null;
+            Direction direction2 = null;
+            Direction direction3 = null;
+            switch (dir1) {
+                case "north":
+                    direction1 = Direction.North;
+                    break;
+                case "south":
+                    direction1 = Direction.South;
+                    break;
+                case "east":
+                    direction1 = Direction.East;
+                    break;
+                case "west":
+                    direction1 = Direction.West;
+                    break;
+            }
+            switch (dir2) {
+                case "north":
+                    direction2 = Direction.North;
+                    break;
+                case "south":
+                    direction2 = Direction.South;
+                    break;
+                case "east":
+                    direction2 = Direction.East;
+                    break;
+                case "west":
+                    direction2 = Direction.West;
+                    break;
+            }
+            switch (dir3) {
+                case "north":
+                    direction3 = Direction.North;
+                    break;
+                case "south":
+                    direction3 = Direction.South;
+                    break;
+                case "east":
+                    direction3 = Direction.East;
+                    break;
+                case "west":
+                    direction3 = Direction.West;
+                    break;
+            }
             if(darkRoom){
                 darkRoomDescription = reader.nextLine();
-                locationList[i] = new Locations(locationName,locationDescription,darkRoom,darkRoomDescription);
+                locationList[i] = new Locations(locationName,locationDescription,darkRoom,darkRoomDescription,exitDescription1,direction1);
             }
             else {
                 locationList[i] = new Locations(locationName,locationDescription);
             }
         }
-        locationManayi = new Locations("Manayi", "Cold and dusty!");
+        /*locationManayi = new Locations("Manayi", "Cold and dusty!");
         locationMordox = new Locations("Mordox", "Hot and Dry!");
         locationYatia = new Locations("Yatia","Ancient symbols on wall.",true,"Wet and Musty!");
         locationKenya = new Locations("Kenya","Unknown");
-        locationOnsid = new Locations("Onsid","Unknown");
+        locationOnsid = new Locations("Onsid","Unknown");*/
     }
 
     private void createExits() {
-        Scanner reader = new Scanner("Exits.txt");
+        /*Scanner reader = new Scanner("Exits.txt");
         Items[] exitsList = new Items[reader.nextInt()];
         for(int i=0;i<exitsList.length;i++){
             reader.nextLine();
@@ -82,7 +136,8 @@ public class AdventureGame {
             else {
                 exitsList[i] = new Exit(description,direction,locations);
             }
-        }
+        }*/
+
         maToMo = new Exit("Wood door", Direction.North, locationMordox);
         moToMa = new Exit("Wood door", Direction.South, locationManayi);
         moToYa = new Exit("Metal door", Direction.East, locationYatia);
@@ -105,7 +160,7 @@ public class AdventureGame {
     }
 
     private void createItems() {
-        Scanner reader = new Scanner("Items.txt");
+        /*Scanner reader = new Scanner("Items.txt");
         Items[] itemsList = new Items[reader.nextInt()];
         for(int i=0;i<itemsList.length;i++){
             reader.nextLine();
@@ -121,7 +176,7 @@ public class AdventureGame {
             else {
                 itemsList[i] = new Items(itemName,itemDescription,inventoryDescription,itemCombine);
             }
-        }
+        }*/
         knife = new Items("Gold Knife", "Used to cut things","Has silver engraving in a different language",false);
         brassKey = new Items("Brass Key", "An old used up key","Can unlock the door to go to Yatia",false);
         batteries = new Items("Batteries","Used to power something up","AA Batteries",true,flashLight,poweredFlashLight);
