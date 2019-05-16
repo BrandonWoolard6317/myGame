@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class AdventureGame {
@@ -13,8 +15,8 @@ public class AdventureGame {
 
     public AdventureGame() {
         init();
-        System.out.println("What's your character's name?");
-        currentLocation = locationManayi;
+        //System.out.println("What's your character's name?");
+        //currentLocation = locationManayi;
         System.out.println("Type Help or ? to get a list of commands!");
         while (true) {
             for (Items item : playerInventory.getInventory()) {
@@ -23,11 +25,6 @@ public class AdventureGame {
             System.out.println(currentLocation);
             takeCommands(new Scanner(System.in));
         }
-    }
-
-    @Override
-    public String toString() {
-        return ""+playerInventory.getInventory();
     }
 
     private void init() {
@@ -41,147 +38,139 @@ public class AdventureGame {
         playerInventory = new Inventory();
     }
 
+
+
+    @Override
+    public String toString() {
+        return "AdventureGame{" +
+                "currentLocation=" + currentLocation +
+                ", locationMordox=" + locationMordox +
+                ", locationManayi=" + locationManayi +
+                ", locationYatia=" + locationYatia +
+                ", locationKenya=" + locationKenya +
+                ", locationOnsid=" + locationOnsid +
+                ", playerInventory=" + playerInventory +
+                ", knife=" + knife +
+                ", brassKey=" + brassKey +
+                ", batteries=" + batteries +
+                ", flashLight=" + flashLight +
+                ", poweredFlashLight=" + poweredFlashLight +
+                ", maToMo=" + maToMo +
+                ", moToMa=" + moToMa +
+                ", moToYa=" + moToYa +
+                ", yaToMo=" + yaToMo +
+                ", yaToKe=" + yaToKe +
+                ", keToYa=" + keToYa +
+                ", keToOn=" + keToOn +
+                ", onToKe=" + onToKe +
+                '}';
+    }
+
     private void createLocations() {
-        Scanner reader = new Scanner("Rooms.txt");
-        Locations[] locationList = new Locations[reader.nextInt()];
+        File file = new File("Rooms.txt");
+        Scanner reader = null;
+        try {
+            reader = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            System.out.println("FILE DOES NOT EXIST");
+        }
+
+        int locations = reader.nextInt();
+        Locations[] locationList = new Locations[locations];
         for(int i=0;i<locationList.length;i++){
             reader.nextLine();
             String locationName = reader.nextLine();
             String locationDescription = reader.nextLine();
+
             boolean darkRoom = reader.nextBoolean();
-            String darkRoomDescription;
-            String leadsTo1 = reader.nextLine();
-            String exitDescription1 = reader.nextLine();
-            String dir1 = reader.nextLine();
-            String leadsTo2 = reader.nextLine();
-            String exitDescription2 = reader.nextLine();
-            String dir2 = reader.nextLine();
-            String leadsTo3 = reader.nextLine();
-            String exitDescription3 = reader.nextLine();
-            String dir3 = reader.nextLine();
-            Direction direction1 = null;
-            Direction direction2 = null;
-            Direction direction3 = null;
-            switch (dir1) {
-                case "north":
-                    direction1 = Direction.North;
-                    break;
-                case "south":
-                    direction1 = Direction.South;
-                    break;
-                case "east":
-                    direction1 = Direction.East;
-                    break;
-                case "west":
-                    direction1 = Direction.West;
-                    break;
-            }
-            switch (dir2) {
-                case "north":
-                    direction2 = Direction.North;
-                    break;
-                case "south":
-                    direction2 = Direction.South;
-                    break;
-                case "east":
-                    direction2 = Direction.East;
-                    break;
-                case "west":
-                    direction2 = Direction.West;
-                    break;
-            }
-            switch (dir3) {
-                case "north":
-                    direction3 = Direction.North;
-                    break;
-                case "south":
-                    direction3 = Direction.South;
-                    break;
-                case "east":
-                    direction3 = Direction.East;
-                    break;
-                case "west":
-                    direction3 = Direction.West;
-                    break;
-            }
+
             if(darkRoom){
-                darkRoomDescription = reader.nextLine();
-                locationList[i] = new Locations(locationName,locationDescription,darkRoom,darkRoomDescription,exitDescription1,direction1);
+                locationList[i] = new Locations(locationName,locationDescription,darkRoom,reader.nextLine());
             }
             else {
                 locationList[i] = new Locations(locationName,locationDescription);
             }
+
+            if(i==0){
+                currentLocation = locationList[0];
+            }
+
+           // System.out.println(locationList[i]);
         }
-        /*locationManayi = new Locations("Manayi", "Cold and dusty!");
-        locationMordox = new Locations("Mordox", "Hot and Dry!");
-        locationYatia = new Locations("Yatia","Ancient symbols on wall.",true,"Wet and Musty!");
-        locationKenya = new Locations("Kenya","Unknown");
-        locationOnsid = new Locations("Onsid","Unknown");*/
     }
 
     private void createExits() {
-        /*Scanner reader = new Scanner("Exits.txt");
-        Items[] exitsList = new Items[reader.nextInt()];
-        for(int i=0;i<exitsList.length;i++){
+        File file = new File("Exits.txt");
+        Scanner reader = null;
+        try {
+            reader = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            System.out.println("FILE DOES NOT EXIST");
+        }
+        String der = null;
+        Direction exitDirection = Direction.North;
+        int exits = reader.nextInt();
+        Exit[] exitList = new Exit[exits];
+        for (int i = 0; i < exitList.length; i++) {
             reader.nextLine();
-            String description = reader.nextLine();
-            Direction direction = reader.nextLine();
-            Locations locations = reader.nextLine();
-            boolean locked = reader.nextBoolean();
-            if(locked){
-                Items item = reader.nextLine();
-                String actionString = reader.nextLine();
-                exitsList[i] = new Exit(description,direction,locations,locked,item,actionString);
+            String exitDescription = reader.nextLine();
+            der = reader.nextLine();
+            String locationOfExit = reader.nextLine();
+            Boolean lockedDoor = reader.nextBoolean();
+            Locations location = null;
+            String item = "";
+            String actionString = "";
+            Items keyItem = null;
+            if (lockedDoor == true) {
+                item = reader.nextLine();
+                actionString = reader.nextLine();
             }
-            else {
-                exitsList[i] = new Exit(description,direction,locations);
+            switch (der) {
+                case "North":
+                    exitDirection = Direction.North;
+                    break;
+                case "South":
+                    exitDirection = Direction.South;
+                    break;
+                case "East":
+                    exitDirection = Direction.East;
+                    break;
+                case "West":
+                    exitDirection = Direction.West;
+                    break;
             }
-        }*/
-
-        maToMo = new Exit("Wood door", Direction.North, locationMordox);
-        moToMa = new Exit("Wood door", Direction.South, locationManayi);
-        moToYa = new Exit("Metal door", Direction.East, locationYatia);
-        yaToMo = new Exit("Metal Door", Direction.West, locationMordox);
-        yaToKe = new Exit("Gold Door",Direction.North,locationKenya);
-        keToYa = new Exit("Gold Door", Direction.South, locationYatia);
-        keToOn = new Exit("Gold Door",Direction.East,locationKenya,true,brassKey,"Unlocked door to Onsid.");
-        locationManayi.addExit(maToMo);
-        locationMordox.addExit(moToMa);
-        locationMordox.addExit(moToYa);
-        locationYatia.addExit(yaToMo);
-        locationYatia.addExit(yaToKe);
-        locationKenya.addExit(keToYa);
-        locationKenya.addExit(keToOn);
-        locationKenya.addItem(brassKey);
-        keToOn.setInteractiveItem(brassKey);
-        locationManayi.addItem(knife);
-        locationMordox.addItem(batteries);
-        locationMordox.addItem(flashLight);
+            if (lockedDoor == true) {
+                exitList[i] = new Exit(exitDescription, exitDirection, location, true, keyItem, actionString);
+            } else {
+                exitList[i] = new Exit(exitDescription, exitDirection, location);
+            }
+        }
     }
 
     private void createItems() {
-        /*Scanner reader = new Scanner("Items.txt");
-        Items[] itemsList = new Items[reader.nextInt()];
-        for(int i=0;i<itemsList.length;i++){
+        File file = new File("Items.txt");
+        Scanner reader = null;
+        try {
+            reader = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            System.out.println("FILE DOES NOT EXIST");
+        }
+        int items = reader.nextInt();
+        Items[] itemList = new Items[items];
+        for (int i = 0; i < itemList.length; i++) {
             reader.nextLine();
             String itemName = reader.nextLine();
             String itemDescription = reader.nextLine();
             String inventoryDescription = reader.nextLine();
-            boolean itemCombine = reader.nextBoolean();
-            if(itemCombine){
-                String item1 = reader.nextLine();
-                String item2 = reader.nextLine();
-                itemsList[i] = new Items(itemName,itemDescription,inventoryDescription,itemCombine,item1,item2);
+            Boolean itemCombine = reader.nextBoolean();
+            Items item1 = null;
+            Items item2 = null;
+            if (itemCombine == true) {
+                itemList[i] = new Items(itemName, itemDescription, inventoryDescription, true, item1, item2);
+            } else {
+                itemList[i] = new Items(itemName, itemDescription, inventoryDescription, false);
             }
-            else {
-                itemsList[i] = new Items(itemName,itemDescription,inventoryDescription,itemCombine);
-            }
-        }*/
-        knife = new Items("Gold Knife", "Used to cut things","Has silver engraving in a different language",false);
-        brassKey = new Items("Brass Key", "An old used up key","Can unlock the door to go to Yatia",false);
-        batteries = new Items("Batteries","Used to power something up","AA Batteries",true,flashLight,poweredFlashLight);
-        flashLight = new Items("Flashlight","Used to see in dark areas","Needs AA Batteries",true,batteries,poweredFlashLight);
-        poweredFlashLight = new Items("Powered Flashlight","Used to see in dark areas","Needs AA Batteries",true,batteries,poweredFlashLight);
+        }
     }
 
     public void takeCommands(Scanner keyboard) {

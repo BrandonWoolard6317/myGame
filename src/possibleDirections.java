@@ -1,4 +1,4 @@
-public class possibleDirections {
+/*public class possibleDirections {
     private Direction direction1,direction2,direction3,direction4;
     private String directionAll;
 
@@ -66,4 +66,4 @@ public class possibleDirections {
     public String listDirections(){
         return directionAll;
     }
-}
+}*/

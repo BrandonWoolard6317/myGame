@@ -1,1 +1,37 @@
 5
+itemName
+itemDescription
+inventoryDescription
+itemCombine
+item1
+item2
+Gold Knife
+Used to cut things
+Has silver engraving in a different language
+false
+item1
+item2
+Brass Key
+An old used up key
+Can unlock the door to go to Yatia
+false
+item1
+item2
+Batteries
+Used to power something up
+AA Batteries
+true
+flashlight
+poweredFlashlight
+Flashlight
+Used to see in dark areas
+Needs AA Batteries
+true
+batteries
+poweredFlashlight
+Powered Flashlight
+Used to see in dark areas
+Uses AA Batteries
+false
+item1
+item2

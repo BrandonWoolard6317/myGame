@@ -1,7 +1,31 @@
-7
+5
 Wood Door
-Direction.North
+North
 locationMordox
 false
 item
-acitonString
+actionString
+Wood Door
+North
+locationManayi
+false
+item
+actionString
+Wood Door
+North
+locationYatia
+false
+item
+actionString
+Wood Door
+North
+locationMordox
+false
+item
+actionString
+Wood Door
+North
+locationManayi
+false
+item
+actionString
